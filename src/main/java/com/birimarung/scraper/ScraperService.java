@@ -32,8 +32,7 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    //    @Scheduled(cron = "0 0 23 * * ?")
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = "0 0 23 * * ?")
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
