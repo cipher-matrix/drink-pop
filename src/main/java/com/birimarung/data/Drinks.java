@@ -14,7 +14,6 @@ public class Drinks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String drinkName;
     private boolean isDrinkPubliclyAvailable;
 }

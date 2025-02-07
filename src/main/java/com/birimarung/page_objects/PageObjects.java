@@ -6,11 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PageObjects {
     //Checkers Page Objects
-
     public By productNameCheckers = By.xpath("(//h3[@class='item-product__name'])");
     public By specialPriceContainerCheckers = By.xpath("//div[@class='extra-message extra-message--xtra-savings']");
     public By priceNowForProductCheckers = By.xpath("//span[@class='now']");
-
     public By checkersAllProductsDiv = By.xpath("//figure[@class='item-product__content']");
 
 

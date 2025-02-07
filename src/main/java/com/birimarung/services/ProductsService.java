@@ -29,11 +29,18 @@ public class ProductsService {
         return response;
     }
 
-    public List<Product> getAllDrinksByName(String name) {
-        List<Product> containingName = productRepository.findProductByDrinkNameContainingIgnoreCase(name.toLowerCase());
-        if (containingName.isEmpty()) {
-            return null;
+    public RestResponse<List<Product>> getAllDrinksByName(String name) {
+        RestResponse<List<Product>> response = new RestResponse<>();
+        List<Product> productListContainingCertainName = productRepository.findProductByDrinkNameContainingIgnoreCase(name.toLowerCase());
+        if (productListContainingCertainName.isEmpty()) {
+            response.setMessage("List is Empty");
+            response.setStatusCode(HttpStatus.NOT_FOUND.value());
+            response.setData(null);
+        } else {
+            response.setMessage("Product list for " + name + " retrieved successfully");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setData(productListContainingCertainName);
         }
-        return containingName;
+        return response;
     }
 }

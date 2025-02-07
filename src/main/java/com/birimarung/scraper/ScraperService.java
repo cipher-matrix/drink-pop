@@ -32,7 +32,8 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    @Scheduled(cron = "0 0 23 * * ?")
+    //    @Scheduled(cron = "0 0 23 * * ?")
+    @Scheduled(fixedDelay = 1000)
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
@@ -42,39 +43,20 @@ public class ScraperService {
         String url;
         try {
             for (Store storeName : allAvailableStores) {
-                List<Drinks> allAvailableDrinks = drinksRepository.findAllByDrinkPubliclyAvailable(true);
+                List<Drinks> allAvailableDrinks = drinksRepository.findByIsDrinkPubliclyAvailable(true);
                 for (Drinks drinks : allAvailableDrinks) {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
                     webDriver.get(url);
-                    List<ProductDTO> productDTOList = productsScrapingService
-                            .getProducts(storeName.getStore_name(), webDriver, drinks.getDrinkName());
-
-
-                    for (ProductDTO productDTO : productDTOList) {
-                        Optional<Product> isDrinkAlreadyAvailable = productRepository
-                                .findProductByDrinkNameAndStoreId(productDTO.getDrinkName(), storeName.getId());
-
-                        if (isDrinkAlreadyAvailable.isEmpty()) {
-                            Product productEntity = new Product();
-                            if (productDTO.getDrinkName().toLowerCase()
-                                    .contains(drinks.getDrinkName().toLowerCase())) {
-                                productEntity.setStoreId(storeName.getId());
-                                productEntity.setPrice(productDTO.getDrinkPrice());
-                                productEntity.setImageUrl(productDTO.getDrinkImageUrl());
-                                productEntity.setDrinkName(productDTO.getDrinkName());
-                                productEntity.setDescription("Nothing yet");
-                                if (productDTO.getSpecialDrinkPrice().isEmpty()) {
-                                    productEntity.setDrinkOnSpecial(false);
-                                } else {
-                                    productEntity.setDrinkOnSpecial(true);
-                                    productEntity.setSpecialPrice(productDTO.getSpecialDrinkPrice());
-                                }
-                                productRepository.save(productEntity);
-                            }
-                        } else {
-                            logger.info("Product already exists with the same store_id, drink_name, and price.");
-                        }
+                    List<ProductDTO> productDTOList = null;
+                    try {
+                        productDTOList = productsScrapingService
+                                .getProducts(storeName.getStore_name(), webDriver, drinks.getDrinkName());
+                    } catch (Exception e) {
+                        logger.info("Something went wrong");
                     }
+
+
+                    saveProductsToDatabase(productDTOList, drinks, storeName.getId());
                 }
             }
         } catch (Exception e) {
@@ -84,6 +66,39 @@ public class ScraperService {
         }
     }
 
+    public void saveProductsToDatabase(List<ProductDTO> productDTOList, Drinks drinks, int storeId) {
+        Optional<Store> storeOptional = storeRepository.findById(storeId);
+        Store store = new Store();
+        if (storeOptional.isPresent()) {
+            store = storeOptional.get();
+        }
+        for (ProductDTO productDTO : productDTOList) {
+            Optional<Product> isDrinkAlreadyAvailable = productRepository
+                    .findProductByDrinkNameAndStoreId(productDTO.getDrinkName(), storeId);
+
+            if (isDrinkAlreadyAvailable.isEmpty()) {
+                Product productEntity = new Product();
+                if (productDTO.getDrinkName().toLowerCase()
+                        .contains(drinks.getDrinkName().toLowerCase())) {
+                    productEntity.setStoreId(storeId);
+                    productEntity.setPrice(productDTO.getDrinkPrice());
+                    productEntity.setImageUrl(productDTO.getDrinkImageUrl());
+                    productEntity.setDrinkName(productDTO.getDrinkName());
+                    productEntity.setDescription("Nothing yet");
+                    productEntity.setStoreName(store.getStore_name().toUpperCase());
+                    if (productDTO.getSpecialDrinkPrice().isEmpty()) {
+                        productEntity.setDrinkOnSpecial(false);
+                    } else {
+                        productEntity.setDrinkOnSpecial(true);
+                        productEntity.setSpecialPrice(productDTO.getSpecialDrinkPrice());
+                    }
+                    productRepository.save(productEntity);
+                }
+            } else {
+                logger.info("Product already exists with the same store_id, drink_name, and price.");
+            }
+        }
+    }
 
     public String getStoreEndpoint(String storeName, String drinkName) {
         String url = "";

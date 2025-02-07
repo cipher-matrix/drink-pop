@@ -20,7 +20,7 @@ public class ProductsController {
     }
 
     @GetMapping("/all/{drink_name}")
-    public List<Product> getDrinksOfCertainName(@PathVariable String drink_name) {
+    public RestResponse<List<Product>> getDrinksOfCertainName(@PathVariable String drink_name) {
         return productsService.getAllDrinksByName(drink_name);
     }
 }

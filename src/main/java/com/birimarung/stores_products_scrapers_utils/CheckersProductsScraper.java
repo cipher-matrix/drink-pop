@@ -30,9 +30,7 @@ public class CheckersProductsScraper {
             if (!contains) {
                 continue;
             }
-            String specialPrice = "";
-            String priceNow = "";
-            String imageSrc = "";
+            String specialPrice, priceNow, imageSrc;
 
             ProductDTO productDTO = new ProductDTO();
             List<WebElement> anchorTagsName = driver.findElements(By.xpath(anchorTagText.replace("%s", productName)));
