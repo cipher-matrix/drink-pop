@@ -42,19 +42,22 @@ public class ScraperService {
         String url;
         try {
             for (Store storeName : allAvailableStores) {
-                List<Drinks> allAvailableDrinks = drinksRepository.findAll();
+                List<Drinks> allAvailableDrinks = drinksRepository.findAllByDrinkPubliclyAvailable(true);
                 for (Drinks drinks : allAvailableDrinks) {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
                     webDriver.get(url);
-                    List<ProductDTO> productDTOList = productsScrapingService.getProducts(storeName.getStore_name(), webDriver, drinks.getDrinkName(), url);
+                    List<ProductDTO> productDTOList = productsScrapingService
+                            .getProducts(storeName.getStore_name(), webDriver, drinks.getDrinkName());
 
 
                     for (ProductDTO productDTO : productDTOList) {
-                        Optional<Product> isDrinkAlreadyAvailable = productRepository.findProductByDrinkNameAndStoreId(productDTO.getDrinkName(), storeName.getId());
+                        Optional<Product> isDrinkAlreadyAvailable = productRepository
+                                .findProductByDrinkNameAndStoreId(productDTO.getDrinkName(), storeName.getId());
 
                         if (isDrinkAlreadyAvailable.isEmpty()) {
                             Product productEntity = new Product();
-                            if (productDTO.getDrinkName().toLowerCase().contains(drinks.getDrinkName().toLowerCase())) {
+                            if (productDTO.getDrinkName().toLowerCase()
+                                    .contains(drinks.getDrinkName().toLowerCase())) {
                                 productEntity.setStoreId(storeName.getId());
                                 productEntity.setPrice(productDTO.getDrinkPrice());
                                 productEntity.setImageUrl(productDTO.getDrinkImageUrl());
@@ -71,7 +74,6 @@ public class ScraperService {
                         } else {
                             logger.info("Product already exists with the same store_id, drink_name, and price.");
                         }
-
                     }
                 }
             }
@@ -97,6 +99,5 @@ public class ScraperService {
         }
         return url;
     }
-
 
 }
