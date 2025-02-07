@@ -1,4 +1,9 @@
-HELP.md
+# Exclude .env files
+.env
+
+# Exclude other IDE and tool-specific files/folders
+
+### General ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
