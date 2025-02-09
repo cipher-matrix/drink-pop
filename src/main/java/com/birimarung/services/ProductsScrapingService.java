@@ -36,11 +36,12 @@ public class ProductsScrapingService {
     public List<ProductDTO> getProducts(String storeName, WebDriver driver, String drinkName) {
         List<ProductDTO> productDTOList = new ArrayList<>();
         switch (storeName) {
-            case "checkers":
+            case "checkers", "shoprite":
                 productDTOList = checkersProductsScraper.checkersProducts(driver, pageObjects, webDriverUtils, productDTOList, drinkName);
                 break;
             case "picknpay":
                 productDTOList = pickNPayProductsScraper.pickNPayProducts(driver, pageObjects, productDTOList);
+                break;
             default:
                 break;
         }

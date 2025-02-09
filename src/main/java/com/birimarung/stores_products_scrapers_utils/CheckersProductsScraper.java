@@ -4,8 +4,12 @@ import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
 import com.birimarung.utils.WebDriverUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v130.page.Page;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
@@ -39,6 +43,7 @@ public class CheckersProductsScraper {
             anchorTagsName.get(1).click();
             imageSrc = imageUrlText.replace("%s", productName);
             WebElement imageElement = driver.findElement(By.xpath(imageSrc));
+
             imageSrc = imageElement.getAttribute("src");
             priceNow = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.priceNowForProductCheckers, 20).replace("R", "");
             specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.specialPriceContainerCheckers, 20);

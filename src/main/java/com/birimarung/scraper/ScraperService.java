@@ -32,7 +32,8 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    @Scheduled(cron = "0 0 23 * * ?")
+//    @Scheduled(cron = "0 0 23 * * ?")
+    @Scheduled(fixedDelay = 1000)
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
@@ -103,10 +104,13 @@ public class ScraperService {
         String url = "";
         switch (storeName) {
             case "checkers":
-                url = constants.CHECKERS_URL.replace("%s", drinkName);
+                url = constants.CHECKERS_URL.replace("{drink_name}", drinkName);
                 break;
             case "picknpay":
-                url = constants.PICK_N_PAY_URL.replace("%s", drinkName);
+                url = constants.PICK_N_PAY_URL.replace("{drink_name}", drinkName);
+                break;
+            case "shoprite":
+                url = constants.SHOPRITE_URL.replace("{drink_name}", drinkName);
                 break;
             default:
                 break;
