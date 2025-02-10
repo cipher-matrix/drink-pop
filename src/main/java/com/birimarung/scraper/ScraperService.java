@@ -13,6 +13,9 @@ import com.birimarung.services.ProductsScrapingService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v130.network.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,8 +35,7 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-//    @Scheduled(cron = "0 0 23 * * ?")
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = "0 0 23 * * ?")
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
@@ -46,6 +48,7 @@ public class ScraperService {
                 List<Drinks> allAvailableDrinks = drinksRepository.findByIsDrinkPubliclyAvailable(true);
                 for (Drinks drinks : allAvailableDrinks) {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
+
                     webDriver.get(url);
                     List<ProductDTO> productDTOList = null;
                     try {
@@ -56,7 +59,10 @@ public class ScraperService {
                     }
 
 
-                    saveProductsToDatabase(productDTOList, drinks, storeName.getId());
+                    if (productDTOList != null) {
+                        saveProductsToDatabase(productDTOList, drinks, storeName.getId());
+                    }
+
                 }
             }
         } catch (Exception e) {

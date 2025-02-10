@@ -6,14 +6,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class WebDriverConfig {
     private WebDriver driver;
 
     public WebDriver getDriver() {
         ChromeOptions options = new ChromeOptions();
+        // Disable all cookies
+        options.addArguments("--incognito");
+        options.setBinary("C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe");
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.addArguments("--disable-extensions");
         options.addArguments("--blink-settings=imagesEnabled=false");
