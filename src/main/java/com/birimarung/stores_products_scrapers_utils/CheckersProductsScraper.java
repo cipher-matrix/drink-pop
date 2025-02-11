@@ -40,9 +40,6 @@ public class CheckersProductsScraper {
 
             // Click the product link
             anchorTagsName.get(1).click();
-            driver.manage().deleteAllCookies();  // Deletes all cookies
-
-
             imageSrc = imageUrlText.replace("%s", productName);
             WebElement imageElement = driver.findElement(By.xpath(imageSrc));
 

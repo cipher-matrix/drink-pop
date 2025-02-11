@@ -118,6 +118,9 @@ public class ScraperService {
             case "shoprite":
                 url = constants.SHOPRITE_URL.replace("{drink_name}", drinkName);
                 break;
+            case "liquorcity":
+                url = constants.LIQUOR_CITY_URL;
+                break;
             default:
                 break;
         }

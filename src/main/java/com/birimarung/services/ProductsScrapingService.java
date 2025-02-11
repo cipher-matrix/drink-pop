@@ -5,6 +5,7 @@ import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
 
 import com.birimarung.stores_products_scrapers_utils.CheckersProductsScraper;
+import com.birimarung.stores_products_scrapers_utils.LiquorCityProductsScraper;
 import com.birimarung.stores_products_scrapers_utils.PickNPayProductsScraper;
 import com.birimarung.utils.WebDriverUtils;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class ProductsScrapingService {
     private static final Logger logger = LoggerFactory.getLogger(ProductsScrapingService.class);
     private final CheckersProductsScraper checkersProductsScraper;
     private final PickNPayProductsScraper pickNPayProductsScraper;
+    private final LiquorCityProductsScraper liquorCityProductsScraper;
     private WebDriverUtils webDriverUtils;
 
 
@@ -38,6 +40,9 @@ public class ProductsScrapingService {
                 break;
             case "picknpay":
                 productDTOList = pickNPayProductsScraper.pickNPayProducts(driver, pageObjects, productDTOList);
+                break;
+            case "liquorcity":
+                productDTOList = liquorCityProductsScraper.liquorCityProducts(productDTOList, drinkName);
                 break;
             default:
                 break;
