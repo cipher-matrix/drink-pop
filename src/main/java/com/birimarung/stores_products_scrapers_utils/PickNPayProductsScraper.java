@@ -2,7 +2,6 @@ package com.birimarung.stores_products_scrapers_utils;
 
 import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
-import com.birimarung.utils.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -3,19 +3,15 @@ package com.birimarung.services;
 
 import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
-
 import com.birimarung.stores_products_scrapers_utils.CheckersProductsScraper;
 import com.birimarung.stores_products_scrapers_utils.LiquorCityProductsScraper;
 import com.birimarung.stores_products_scrapers_utils.PickNPayProductsScraper;
 import com.birimarung.utils.WebDriverUtils;
 import lombok.AllArgsConstructor;
-
 import org.openqa.selenium.WebDriver;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 
 import java.util.ArrayList;
 import java.util.List;
