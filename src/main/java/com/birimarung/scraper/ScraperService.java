@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ public class ScraperService {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
 
                     webDriver.get(url);
-                    List<ProductDTO> productDTOList = null;
+                    List<ProductDTO> productDTOList = new ArrayList<>();
                     try {
                         productDTOList = productsScrapingService
                                 .getProducts(storeName.getStore_name(), webDriver, drinks.getDrinkName());
@@ -56,10 +57,10 @@ public class ScraperService {
                     }
 
 
-                    if (productDTOList != null) {
-                        saveProductsToDatabase(productDTOList, drinks, storeName.getId());
+                    if (productDTOList.isEmpty()) {
+                        continue;
                     }
-
+                    saveProductsToDatabase(productDTOList, drinks, storeName.getId());
                 }
             }
         } catch (Exception e) {

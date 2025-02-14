@@ -33,11 +33,12 @@ public class CheckersProductsScraper {
             String specialPrice, priceNow, imageSrc;
 
             ProductDTO productDTO = new ProductDTO();
-            List<WebElement> anchorTagsName = driver.findElements(By.xpath(anchorTagText.replace("%s", productName)));
+            String alcoholName = drinkName.equalsIgnoreCase("Corona") ? productName + " " : productName;
+            List<WebElement> anchorTagsName = driver.findElements(By.xpath(anchorTagText.replace("%s", alcoholName)));
 
             // Click the product link
             anchorTagsName.get(1).click();
-            imageSrc = imageUrlText.replace("%s", productName);
+            imageSrc = imageUrlText.replace("%s", alcoholName);
             WebElement imageElement = driver.findElement(By.xpath(imageSrc));
 
             imageSrc = imageElement.getAttribute("src");

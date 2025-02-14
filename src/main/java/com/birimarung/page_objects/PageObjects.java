@@ -11,6 +11,8 @@ public class PageObjects {
     public By priceNowForProductCheckers = By.xpath("//span[@class='now']");
     public By checkersAllProductsDiv = By.xpath("//figure[@class='item-product__content']");
 
+    public By checkersTopSpecialPrice = By.xpath("//div[@class='special-price__extra__price']");
+    public By checkersTopSpecialPriceValidTill = By.xpath("//span[@class='special-price__extra__text']");
 
 
     // Pick n Pay PageObjects

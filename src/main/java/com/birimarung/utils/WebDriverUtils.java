@@ -36,6 +36,7 @@ public class WebDriverUtils {
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return driver.findElement(locator).getText();
         } catch (Exception e) {
+
             logger.info("Something went wrong with " + locator);
             return null;
         }
