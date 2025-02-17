@@ -1,8 +1,8 @@
 package com.birimarung.controllers;
 
 
-import com.birimarung.data.Store;
 import com.birimarung.dto.RestResponse;
+import com.birimarung.dto.StoreDto;
 import com.birimarung.services.StoreService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping("/stores")
-    public RestResponse<List<Store>> getAllStoresController() {
+    public RestResponse<List<StoreDto>> getAllStoresController() {
         return storeService.getAllStores();
     }
 }
