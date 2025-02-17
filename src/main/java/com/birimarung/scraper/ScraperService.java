@@ -36,6 +36,7 @@ public class ScraperService {
     @Scheduled(cron = "0 0 23 * * ?")
     @Transactional
     public void entryToScraping() {
+        productRepository.deleteAll();
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
         WebDriver webDriver;
         WebDriverConfig webDriverConfig = new WebDriverConfig();
