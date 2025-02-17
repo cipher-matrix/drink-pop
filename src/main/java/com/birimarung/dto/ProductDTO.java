@@ -10,4 +10,5 @@ public class ProductDTO {
     private double drinkPrice;
     private String drinkImageUrl;
     private String specialDrinkPrice;
+    private String storeName;
 }
