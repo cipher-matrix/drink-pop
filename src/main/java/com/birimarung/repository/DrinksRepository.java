@@ -11,3 +11,4 @@ public interface DrinksRepository extends JpaRepository<Drinks, Integer> {
     List<Drinks> findByIsDrinkPubliclyAvailable(boolean isDrinkPubliclyAvailable);
 
 }
+
