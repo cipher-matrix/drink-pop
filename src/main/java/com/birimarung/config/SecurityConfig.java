@@ -14,8 +14,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .requestMatchers("/products/**").permitAll()
+        http.csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/waitlist/**") // Disable CSRF for this path
+                )
+                .authorizeRequests()
+                .requestMatchers("/products/**", "/waitlist/**").permitAll()
                 .requestMatchers("/stores/**").authenticated()
                 .anyRequest().authenticated().and().httpBasic(withDefaults());
         return http.build();
