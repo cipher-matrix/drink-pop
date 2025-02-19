@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
+
     @Cacheable(value = "storeCache", key = "'stores'")
     public RestResponse<List<StoreRedis>> getAllStores() {
         RestResponse<List<StoreRedis>> response = new RestResponse<>();
