@@ -40,10 +40,11 @@ public class ProductsService {
         return response;
     }
 
-    public RestResponse<List<ProductsRedis>> getAllDrinksByName(String name) {
+    @Cacheable(value = "productsByDrinkNameCache", key = "#drinkName")
+    public RestResponse<List<ProductsRedis>> getAllDrinksByName(String drinkName) {
         RestResponse<List<ProductsRedis>> response = new RestResponse<>();
         List<ProductsRedis> productsRedis = new ArrayList<>();
-        List<Product> productListContainingCertainName = productRepository.findProductByDrinkNameContainingIgnoreCase(name.toLowerCase());
+        List<Product> productListContainingCertainName = productRepository.findProductByDrinkNameContainingIgnoreCase(drinkName.toLowerCase());
         if (productListContainingCertainName.isEmpty()) {
             response.setMessage("List is Empty");
             response.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -52,7 +53,7 @@ public class ProductsService {
             for (Product product : productListContainingCertainName) {
                 productsRedis.add(convertProductsToDto(product));
             }
-            response.setMessage("Product list for " + name + " retrieved successfully");
+            response.setMessage("Product list for " + drinkName + " retrieved successfully");
             response.setStatusCode(HttpStatus.OK.value());
             response.setData(productsRedis);
         }

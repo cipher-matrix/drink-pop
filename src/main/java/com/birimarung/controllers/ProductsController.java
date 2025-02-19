@@ -33,7 +33,12 @@ public class ProductsController {
 
 
     @GetMapping("/all/{drink_name}")
-    public RestResponse<List<ProductsRedis>> getDrinksOfCertainName(@PathVariable String drink_name) {
-        return productsService.getAllDrinksByName(drink_name);
+    public ResponseEntity<RestResponse<List<ProductsRedis>>> getDrinksOfCertainName(@PathVariable String drink_name) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic());
+        RestResponse<List<ProductsRedis>> response = productsService.getAllDrinksByName(drink_name);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(response);
     }
 }
