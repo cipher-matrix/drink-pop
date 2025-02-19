@@ -3,7 +3,6 @@ package com.birimarung.services;
 import com.birimarung.data.Product;
 import com.birimarung.dto.RestResponse;
 import com.birimarung.redis_data.ProductsRedis;
-import com.birimarung.redis_repository.ProductRedisRepository;
 import com.birimarung.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,14 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductsService {
     private final ProductRepository productRepository;
-    private final ProductRedisRepository productRedisRepository;
+
 
     @Cacheable(value = "productsCache", key = "'products'")
     public RestResponse<List<ProductsRedis>> getAllProducts() {
         RestResponse<List<ProductsRedis>> response = new RestResponse<>();
         List<ProductsRedis> productsRedis = new ArrayList<>();
         List<Product> productList = productRepository.findAll();
-
 
         if (productList.isEmpty()) {
             response.setMessage("List is Empty");
