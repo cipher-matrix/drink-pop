@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 public class ProductsRedis implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L; // It's good practice to add this
+    private static final long serialVersionUID = 1L;
     private int id;
     private String drinkName;
     private int storeId;
