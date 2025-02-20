@@ -20,7 +20,7 @@ public class WaitListService {
         RestResponse<?> restResponse = new RestResponse<>();
 
         if (optionalWaitlist.isPresent()) {
-            restResponse.setMessage("User with email " + email + " already exists");
+            restResponse.setMessage("User with email " + email + " already exists!");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(restResponse);
         } else {
             Waitlist waitlist = new Waitlist();
