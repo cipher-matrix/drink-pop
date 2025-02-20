@@ -3,6 +3,7 @@ package com.birimarung.controllers;
 import com.birimarung.dto.RestResponse;
 import com.birimarung.services.WaitListService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public class WaitlistController {
     private final WaitListService waitListService;
 
     @PostMapping("/{email}")
-    public RestResponse<?> addUserController(@PathVariable String email) {
+    public ResponseEntity<RestResponse<?>> addUserController(@PathVariable String email) {
         return waitListService.addPersonToWaitList(email);
     }
 }
