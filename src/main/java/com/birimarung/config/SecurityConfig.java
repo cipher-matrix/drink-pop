@@ -18,7 +18,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/waitlist/**") // Disable CSRF for this path
                 )
                 .authorizeRequests()
-                .requestMatchers("/products/**", "/waitlist/**").permitAll()
+                .requestMatchers("/products/**", "/waitlist/**", "/**").permitAll() // Allow all for CORS preflight
                 .requestMatchers("/stores/**").authenticated()
                 .anyRequest().authenticated().and().httpBasic(withDefaults());
         return http.build();
