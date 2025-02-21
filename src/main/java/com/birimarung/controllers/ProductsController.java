@@ -41,4 +41,9 @@ public class ProductsController {
                 .headers(headers)
                 .body(response);
     }
+
+    @GetMapping("/keep-alive")
+    public String keepAlive() {
+        return "Server is alive at " + java.time.LocalDateTime.now();
+    }
 }
