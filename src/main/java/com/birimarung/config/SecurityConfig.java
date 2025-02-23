@@ -23,8 +23,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(Arrays.asList("https://drink-pop.vercel.app", "http://localhost:4200"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
-        config.setAllowCredentials(true); // Allow credentials (cookies, etc.)
-        source.registerCorsConfiguration("/**", config);  // Apply the config globally
+        config.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 

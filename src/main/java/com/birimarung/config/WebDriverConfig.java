@@ -13,12 +13,12 @@ public class WebDriverConfig {
 
     public WebDriver getDriver() {
         ChromeOptions options = new ChromeOptions();
-        // Disable all cookies
+
 
         options.addArguments("--incognito");
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");
-        options.addArguments("--remote-debugging-port=9222"); // Disable GPU (often needed in headless mode)
+        options.addArguments("--remote-debugging-port=9222");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.addArguments("--disable-extensions");
