@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Profile("dev")
 @Service
 @AllArgsConstructor
 public class ScraperService {
@@ -33,7 +35,8 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    @Scheduled(cron = "0 0 23 * * ?")
+//    @Scheduled(cron = "0 0 23 * * ?")
+    @Scheduled(fixedDelay = 1000)
     @Transactional
     public void entryToScraping() {
         productRepository.deleteAll();

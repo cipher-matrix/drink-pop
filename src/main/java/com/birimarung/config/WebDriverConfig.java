@@ -15,7 +15,6 @@ public class WebDriverConfig {
         ChromeOptions options = new ChromeOptions();
         // Disable all cookies
         options.addArguments("--incognito");
-        options.setBinary("C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe");
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.addArguments("--disable-extensions");
         options.addArguments("--blink-settings=imagesEnabled=false");
