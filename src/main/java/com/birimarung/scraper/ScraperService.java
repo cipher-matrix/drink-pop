@@ -52,6 +52,7 @@ public class ScraperService {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
 
                     webDriver.get(url);
+                    System.out.println("Requesting URL: " + url);
                     List<ProductDTO> productDTOList = new ArrayList<>();
                     try {
                         productDTOList = productsScrapingService
@@ -128,6 +129,7 @@ public class ScraperService {
         }
         return url;
     }
+
     public String encodeParam(String param) {
         return URLEncoder.encode(param, StandardCharsets.UTF_8);
     }
