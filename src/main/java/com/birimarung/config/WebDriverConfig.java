@@ -13,8 +13,7 @@ public class WebDriverConfig {
 
     public WebDriver getDriver() {
         ChromeOptions options = new ChromeOptions();
-
-
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         options.addArguments("--incognito");
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");
@@ -24,7 +23,6 @@ public class WebDriverConfig {
         options.addArguments("--disable-extensions");
         options.addArguments("--blink-settings=imagesEnabled=false");
         options.addArguments("--disable-notifications");
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
