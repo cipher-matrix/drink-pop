@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +36,7 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    @Scheduled(cron = "0 0 23 * * ?")
+    @Scheduled(fixedDelay = 1000)
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
@@ -110,13 +112,13 @@ public class ScraperService {
         String url = "";
         switch (storeName) {
             case "checkers":
-                url = constants.CHECKERS_URL.replace("{drink_name}", drinkName);
+                url = constants.CHECKERS_URL.replace("{drink_name}", encodeParam(drinkName));
                 break;
             case "picknpay":
-                url = constants.PICK_N_PAY_URL.replace("{drink_name}", drinkName);
+                url = constants.PICK_N_PAY_URL.replace("{drink_name}", encodeParam(drinkName));
                 break;
             case "shoprite":
-                url = constants.SHOPRITE_URL.replace("{drink_name}", drinkName);
+                url = constants.SHOPRITE_URL.replace("{drink_name}", encodeParam(drinkName));
                 break;
             case "liquorcity":
                 url = constants.LIQUOR_CITY_URL;
@@ -126,5 +128,7 @@ public class ScraperService {
         }
         return url;
     }
-
+    public String encodeParam(String param) {
+        return URLEncoder.encode(param, StandardCharsets.UTF_8);
+    }
 }
