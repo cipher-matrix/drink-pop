@@ -16,6 +16,14 @@ public class WebDriverConfig {
     public WebDriver getDriver() {
         ChromeOptions options = new ChromeOptions();
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+
+        options.addArguments("--disable-dev-shm-usage");  // Use disk instead of /dev/shm
+        options.addArguments("--single-process");  // Reduce process count
+        options.addArguments("--disable-background-timer-throttling");
+        options.addArguments("--disable-backgrounding-occluded-windows");
+        options.addArguments("--disable-renderer-backgrounding");
+        options.addArguments("--disable-features=ScriptStreaming");  // Reduce script execution
+
         options.setBinary("/usr/bin/google-chrome");
         options.addArguments("--remote-debugging-port=9515");
         options.addArguments("--incognito");
