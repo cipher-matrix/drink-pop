@@ -24,7 +24,7 @@ public class WebDriverConfig {
         options.addArguments("--disable-extensions");
         options.addArguments("--blink-settings=imagesEnabled=false");
         options.addArguments("--disable-notifications");
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
