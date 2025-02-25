@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.nio.file.Paths;
 import java.time.Duration;
 
 
@@ -15,20 +16,9 @@ public class WebDriverConfig {
     public WebDriver getDriver() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
-        options.setBinary("/usr/lib/firefox/firefox");
+        options.setBinary(Paths.get("/usr/lib/firefox/firefox").toString());
+        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--incognito", "--disable-extensions", "--blink-settings=imagesEnabled=true", "--disable-notifications");
 
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-
-        options.addArguments("--incognito");
-        options.addArguments("--disable-blink-features=AutomationControlled");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--blink-settings=imagesEnabled=false");
-        options.addArguments("--disable-notifications");
-
-        // Initialize WebDriver with options
         WebDriver driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
