@@ -1,12 +1,11 @@
 package com.birimarung.config;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PreDestroy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
-import java.io.File;
 import java.time.Duration;
 
 
@@ -14,32 +13,24 @@ public class WebDriverConfig {
     private WebDriver driver;
 
     public WebDriver getDriver() {
-        ChromeOptions options = new ChromeOptions();
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
 
-        options.addArguments("--disable-dev-shm-usage");  // Use disk instead of /dev/shm
-        options.addArguments("--single-process");  // Reduce process count
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-backgrounding-occluded-windows");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-features=ScriptStreaming");  // Reduce script execution
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
 
-        options.setBinary("/usr/bin/google-chrome");
+
         options.addArguments("--remote-debugging-port=9515");
         options.addArguments("--incognito");
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.addArguments("--disable-extensions");
         options.addArguments("--blink-settings=imagesEnabled=false");
         options.addArguments("--disable-notifications");
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("/usr/local/bin/chromedriver"))
-                .usingAnyFreePort()
-                .build();
 
-        WebDriver driver = new ChromeDriver(service, options);
+        // Initialize WebDriver with options
+        WebDriver driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 

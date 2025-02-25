@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -35,6 +36,7 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
+    @Scheduled(fixedDelay = 1000)
     @Transactional
     public void entryToScraping() {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
