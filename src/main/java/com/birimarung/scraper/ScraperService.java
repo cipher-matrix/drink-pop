@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class ScraperService {
 
     @Scheduled(fixedDelay = 1000)
     @Transactional
-    public void entryToScraping() {
+    public void entryToScraping() throws MalformedURLException {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
         WebDriver webDriver;
         WebDriverConfig webDriverConfig = new WebDriverConfig();
