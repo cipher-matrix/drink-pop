@@ -1,5 +1,6 @@
 package com.birimarung.config;
 
+import com.titusfortner.logging.SeleniumLogger;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PreDestroy;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ public class WebDriverConfig {
     private WebDriver driver;
 
     public WebDriver getDriver() {
+        SeleniumLogger.enable();
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary(Paths.get("/usr/lib/firefox/firefox").toString());
