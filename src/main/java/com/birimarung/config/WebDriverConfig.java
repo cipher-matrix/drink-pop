@@ -4,28 +4,23 @@ import com.titusfortner.logging.SeleniumLogger;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PreDestroy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.nio.file.Paths;
-import java.time.Duration;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class WebDriverConfig {
     private WebDriver driver;
 
-    public WebDriver getDriver() {
+    public WebDriver getDriver() throws MalformedURLException {
         SeleniumLogger.enable();
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
-        options.setBinary(Paths.get("/usr/lib/firefox/firefox").toString());
         options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--incognito", "--disable-extensions", "--blink-settings=imagesEnabled=true", "--disable-notifications");
 
-        WebDriver driver = new FirefoxDriver(options);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-
-        return driver;
+        return new RemoteWebDriver(new URL("http://geckodriver:4444"), options);
     }
 
     public void quitDriver() {
