@@ -15,7 +15,7 @@ public class WebDriverConfig {
     public WebDriver getDriver() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
-        options.setBinary("/usr/bin/firefox");
+        options.setBinary("/usr/lib/firefox/firefox");
 
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
