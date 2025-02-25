@@ -21,8 +21,6 @@ public class WebDriverConfig {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
 
-
-        options.addArguments("--remote-debugging-port=9515");
         options.addArguments("--incognito");
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.addArguments("--disable-extensions");
