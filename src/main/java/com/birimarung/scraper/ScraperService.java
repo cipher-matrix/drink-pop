@@ -39,7 +39,7 @@ public class ScraperService {
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
     //    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 10000)
 
 
     @Transactional
