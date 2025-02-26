@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ProductsRedis implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private int id;
+    private String id;
     private String drinkName;
     private int storeId;
     private double price;
@@ -22,4 +22,5 @@ public class ProductsRedis implements Serializable {
     private String specialPrice;
     private boolean isDrinkOnSpecial;
     private String storeName;
+
 }

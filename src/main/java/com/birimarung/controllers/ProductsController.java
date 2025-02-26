@@ -42,8 +42,15 @@ public class ProductsController {
                 .body(response);
     }
 
-    @GetMapping("/keep-alive")
-    public String keepAlive() {
-        return "Server is alive at " + java.time.LocalDateTime.now();
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductsRedis> getProductById(@PathVariable String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic());
+        ProductsRedis response = productsService.getProductById(id);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(response);
     }
+
+
 }

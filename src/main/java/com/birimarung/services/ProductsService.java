@@ -60,8 +60,16 @@ public class ProductsService {
         return response;
     }
 
+    @Cacheable(value = "productsCache", key = "'product:' + #id")
+    public ProductsRedis getProductById(String id) {
+        return productRepository.findById(id)
+                .map(this::convertProductsToDto)
+                .orElse(null);
+    }
+
     private ProductsRedis convertProductsToDto(Product product) {
         ProductsRedis productsRedis = new ProductsRedis();
+        productsRedis.setId(product.getId());
         productsRedis.setSpecialPrice(product.getSpecialPrice());
         productsRedis.setDrinkName(product.getDrinkName());
         productsRedis.setImageUrl(product.getImageUrl());

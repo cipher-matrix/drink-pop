@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 @Entity
@@ -13,8 +14,7 @@ import java.io.Serializable;
 @Setter
 public class Product implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
     @Column(columnDefinition = "TEXT")
     private String drinkName;
     private int storeId;
@@ -25,5 +25,9 @@ public class Product implements Serializable {
     private String specialPrice;
     private boolean isDrinkOnSpecial;
     private String storeName;
+
+    public Product() {
+        this.id = UUID.randomUUID().toString();
+    }
 
 }
