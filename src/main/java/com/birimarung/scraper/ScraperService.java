@@ -38,8 +38,9 @@ public class ScraperService {
     private final Constants constants;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-//    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
-    @Scheduled(cron = "0 */10 23 * * *", zone = "Africa/Johannesburg")
+    //    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
+    @Scheduled(fixedDelay = 1000)
+
 
     @Transactional
     public void entryToScraping() throws MalformedURLException {
