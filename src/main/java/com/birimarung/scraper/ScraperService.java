@@ -11,10 +11,11 @@ import com.birimarung.repository.ProductRepository;
 import com.birimarung.repository.StoreRepository;
 import com.birimarung.services.ProductsScrapingService;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("prod")
+@Profile("dev")
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ScraperService {
 
     private final StoreRepository storeRepository;
@@ -36,18 +37,22 @@ public class ScraperService {
     private final ProductsScrapingService productsScrapingService;
     private final DrinksRepository drinksRepository;
     private final Constants constants;
+    @Value("${SPRING_PROFILES_ACTIVE}")
+    private String activeProfile;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    //    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
-    @Scheduled(fixedDelay = 10000)
-
-
+    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
     @Transactional
     public void entryToScraping() throws MalformedURLException {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
         WebDriver webDriver;
         WebDriverConfig webDriverConfig = new WebDriverConfig();
-        webDriver = webDriverConfig.getDriver();
+        if (activeProfile.equalsIgnoreCase("prod")) {
+            webDriver = webDriverConfig.getDriverProd();
+        } else {
+            webDriver = webDriverConfig.getDriver();
+        }
+
         String url;
         productRepository.deleteAll();
         try {
@@ -55,10 +60,7 @@ public class ScraperService {
                 List<Drinks> allAvailableDrinks = drinksRepository.findByIsDrinkPubliclyAvailable(true);
                 for (Drinks drinks : allAvailableDrinks) {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
-                    System.out.println("Requesting URL: " + url);
                     webDriver.get(url);
-                    String pageSource = webDriver.getPageSource();
-                    System.out.println(pageSource);
 
                     List<ProductDTO> productDTOList = new ArrayList<>();
                     try {
