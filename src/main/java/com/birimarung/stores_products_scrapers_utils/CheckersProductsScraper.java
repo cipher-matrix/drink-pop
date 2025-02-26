@@ -19,11 +19,23 @@ public class CheckersProductsScraper {
     public List<ProductDTO> checkersProducts(WebDriver driver, PageObjects pageObjects, WebDriverUtils webDriverUtils, List<ProductDTO> productDTOList, String drinkName) throws InterruptedException {
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-        Thread.sleep(2000);
+        long lastHeight = (long) js.executeScript("return document.body.scrollHeight");
+
+        while (true) {
+            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+            Thread.sleep(2000);
+
+            long newHeight = (long) js.executeScript("return document.body.scrollHeight");
+            if (newHeight == lastHeight) {
+                break;
+            }
+            lastHeight = newHeight;
+        }
 
         String imageUrlText = "//img[@alt='%s']";
         String anchorTagText = "//a[@title='%s']";
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.presenceOfElementLocated(pageObjects.checkersAllProductsDiv));
         List<WebElement> productsContainers = driver.findElements(pageObjects.checkersAllProductsDiv);
 
         for (int i = 0; i < productsContainers.size(); i++) {
@@ -58,13 +70,18 @@ public class CheckersProductsScraper {
 
 
             productDTOList.add(productDTO);
-
-            // Go back to the previous page and wait for the page to reload
             driver.navigate().back();
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
             wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(pageObjects.checkersAllProductsDiv));
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-            Thread.sleep(2000);
+            while (true) {
+                js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+                Thread.sleep(2000);
+                long newHeight = (long) js.executeScript("return document.body.scrollHeight");
+                if (newHeight == lastHeight) {
+                    break;
+                }
+                lastHeight = newHeight;
+            }
             // After waiting, retrieve the product containers again
             productsContainers = driver.findElements(pageObjects.checkersAllProductsDiv);
         }
