@@ -57,6 +57,8 @@ public class ScraperService {
                     url = getStoreEndpoint(storeName.getStore_name(), drinks.getDrinkName());
                     System.out.println("Requesting URL: " + url);
                     webDriver.get(url);
+                    String pageSource = webDriver.getPageSource();
+                    System.out.println(pageSource);
 
                     List<ProductDTO> productDTOList = new ArrayList<>();
                     try {
