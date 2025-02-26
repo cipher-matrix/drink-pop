@@ -28,7 +28,7 @@ public class ProductsScrapingService {
     private WebDriverUtils webDriverUtils;
 
 
-    public List<ProductDTO> getProducts(String storeName, WebDriver driver, String drinkName) {
+    public List<ProductDTO> getProducts(String storeName, WebDriver driver, String drinkName) throws InterruptedException {
         List<ProductDTO> productDTOList = new ArrayList<>();
         switch (storeName) {
             case "checkers", "shoprite":
