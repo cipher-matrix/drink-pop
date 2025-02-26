@@ -4,6 +4,7 @@ import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
 import com.birimarung.utils.WebDriverUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,7 +16,12 @@ import java.util.List;
 
 @Component
 public class CheckersProductsScraper {
-    public List<ProductDTO> checkersProducts(WebDriver driver, PageObjects pageObjects, WebDriverUtils webDriverUtils, List<ProductDTO> productDTOList, String drinkName) {
+    public List<ProductDTO> checkersProducts(WebDriver driver, PageObjects pageObjects, WebDriverUtils webDriverUtils, List<ProductDTO> productDTOList, String drinkName) throws InterruptedException {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        Thread.sleep(2000);
+
         String imageUrlText = "//img[@alt='%s']";
         String anchorTagText = "//a[@title='%s']";
         List<WebElement> productsContainers = driver.findElements(pageObjects.checkersAllProductsDiv);
@@ -57,7 +63,8 @@ public class CheckersProductsScraper {
             driver.navigate().back();
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(pageObjects.checkersAllProductsDiv));
-
+            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+            Thread.sleep(2000);
             // After waiting, retrieve the product containers again
             productsContainers = driver.findElements(pageObjects.checkersAllProductsDiv);
         }
