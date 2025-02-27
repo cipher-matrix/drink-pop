@@ -1,12 +1,8 @@
 package com.birimarung.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.redis.core.RedisHash;
 
 
 @Entity
@@ -18,4 +14,7 @@ public class Drinks {
     private int id;
     private String drinkName;
     private boolean isDrinkPubliclyAvailable;
+    @ManyToOne
+    @JoinColumn(name = "drink_type_id", foreignKey = @ForeignKey(name = "fk_drink_type"))
+    private DrinkType drinkType;
 }

@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
@@ -41,7 +40,7 @@ public class ScraperService {
     private String activeProfile;
     private final Logger logger = LoggerFactory.getLogger(ScraperService.class);
 
-    @Scheduled(cron = "0 0 23 * * *", zone = "Africa/Johannesburg")
+
     @Transactional
     public void entryToScraping() throws MalformedURLException {
         List<Store> allAvailableStores = storeRepository.findByIsActiveTrue();
