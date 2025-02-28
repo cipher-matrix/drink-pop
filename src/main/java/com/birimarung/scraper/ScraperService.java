@@ -103,6 +103,7 @@ public class ScraperService {
                     productEntity.setDrinkName(productDTO.getDrinkName());
                     productEntity.setDescription("Nothing yet");
                     productEntity.setStoreName(store.getStore_name().toUpperCase());
+
                     if (productDTO.getSpecialDrinkPrice().isEmpty()) {
                         productEntity.setDrinkOnSpecial(false);
                     } else {

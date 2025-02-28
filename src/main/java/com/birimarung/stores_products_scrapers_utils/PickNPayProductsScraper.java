@@ -2,6 +2,8 @@ package com.birimarung.stores_products_scrapers_utils;
 
 import com.birimarung.dto.ProductDTO;
 import com.birimarung.page_objects.PageObjects;
+import com.birimarung.utils.WebDriverUtils;
+import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class PickNPayProductsScraper {
     private final Logger logger = LoggerFactory.getLogger(PickNPayProductsScraper.class);
+    private final WebDriverUtils webDriverUtils;
 
     public List<ProductDTO> pickNPayProducts(WebDriver driver, PageObjects pageObjects, List<ProductDTO> productDTOList) {
         try {
@@ -34,8 +38,25 @@ public class PickNPayProductsScraper {
                 List<WebElement> productPriceElement = driver.findElements(pageObjects.productPricePickNPay);
                 productPrice = productPriceElement.get(i).getText();
                 String[] twoPrices = productPrice.split(" ");
-                specialPrice = twoPrices[0].replace("R", "");
-                normalPrice = twoPrices[1].replace("R", "");
+
+
+                boolean smartShopperPrice = false;
+                int countSmartShopperPrice = 0;
+                while(!smartShopperPrice){
+                    smartShopperPrice = driver.findElement(pageObjects.smartShopperPrice).isDisplayed();
+                    countSmartShopperPrice++;
+                    if(countSmartShopperPrice ==20){
+                        break;
+                    }
+                }
+
+                if(smartShopperPrice){
+                    specialPrice = webDriverUtils.waitForElementPresenceGetText(driver,pageObjects.smartShopperPrice,30);
+                    normalPrice = twoPrices[0].replace("R","");
+                }else{
+                    specialPrice = twoPrices[0].replace("R", "");
+                    normalPrice = twoPrices[1].replace("R", "");
+                }
                 productDTO.setDrinkName(productName);
                 productDTO.setDrinkPrice(Double.parseDouble(normalPrice));
                 productDTO.setDrinkImageUrl(imageUrl);

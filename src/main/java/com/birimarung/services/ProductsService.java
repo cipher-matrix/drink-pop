@@ -75,6 +75,7 @@ public class ProductsService {
         productsRedis.setImageUrl(product.getImageUrl());
         productsRedis.setPrice(product.getPrice());
         productsRedis.setStoreName(product.getStoreName());
+        productsRedis.setDrinkOnSpecial(true);
         return productsRedis;
     }
 }

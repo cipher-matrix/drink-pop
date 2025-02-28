@@ -46,9 +46,23 @@ public class CheckersProductsScraper {
             WebElement imageElement = driver.findElement(By.xpath(imageSrc));
 
             imageSrc = imageElement.getAttribute("src");
-            priceNow = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.priceNowForProductCheckers, 20).replace("R", "");
-            specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.specialPriceContainerCheckers, 20);
+            boolean isSpecialPriceTop = false;
+            int isSpecialPriceTopCount = 0;
+            while(!isSpecialPriceTop){
+                isSpecialPriceTop = driver.findElement(pageObjects.checkersTopSpecialPrice).isDisplayed();
+                isSpecialPriceTopCount++;
+                if(isSpecialPriceTopCount == 20){
+                    break;
+                }
+            }
 
+            if(isSpecialPriceTop){
+                specialPrice = webDriverUtils.waitForElementPresenceGetText(driver,pageObjects.checkersTopSpecialPrice,30) + " " + webDriverUtils.waitForElementPresenceGetText(driver,pageObjects.checkersTopSpecialPriceValidTill,30);
+                priceNow = webDriverUtils.waitForElementPresenceGetText(driver,pageObjects.priceBeforeCheckers,30).replace("R", "");
+            }else{
+                priceNow = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.priceNowForProductCheckers, 20).replace("R", "");
+                specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.specialPriceContainerCheckers, 20);
+            }
 
 
             productDTO.setDrinkPrice(Double.parseDouble(priceNow));
