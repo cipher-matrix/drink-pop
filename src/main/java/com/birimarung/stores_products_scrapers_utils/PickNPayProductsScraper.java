@@ -22,7 +22,7 @@ public class PickNPayProductsScraper {
     public List<ProductDTO> pickNPayProducts(WebDriver driver, PageObjects pageObjects, List<ProductDTO> productDTOList) {
         try {
             List<WebElement> allProducts = driver.findElements(pageObjects.pickNPayAllProductsDiv);
-            String specialPrice, normalPrice, productPrice, imageUrlText, productName, imageUrl;
+            String specialPrice = null, normalPrice = null, productPrice, imageUrlText, productName, imageUrl;
             for (int i = 0; i < allProducts.size(); i++) {
                 ProductDTO productDTO = new ProductDTO();
 
@@ -35,19 +35,19 @@ public class PickNPayProductsScraper {
                 imageUrl = productImageElementPickNPay.getAttribute("src");
 
 
-                List<WebElement> productPriceElement = driver.findElements(pageObjects.productPricePickNPay);
-                productPrice = productPriceElement.get(i).getText();
-                String[] twoPrices = productPrice.split(" ");
-
-
-                boolean smartShopperPrice = webDriverUtils.isElementVisible(driver, pageObjects.smartShopperPrice);
-                if (smartShopperPrice) {
-                    specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.smartShopperPrice);
-                    normalPrice = twoPrices[0].replace("R", "");
-                } else {
+                String smartShopperPriceString = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.smartShopperPrice);
+                if (smartShopperPriceString.isEmpty() || smartShopperPriceString.isBlank()) {
+                    List<WebElement> productPriceElement = driver.findElements(pageObjects.productPricePickNPay);
+                    productPrice = productPriceElement.get(i).getText();
+                    String[] twoPrices = productPrice.split(" ");
                     specialPrice = twoPrices[0].replace("R", "");
                     normalPrice = twoPrices[1].replace("R", "");
+                } else {
+                    specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.smartShopperPrice);
+                    normalPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.pickNPaySinglePrice).replace("R", "");
                 }
+
+
                 productDTO.setDrinkName(productName);
                 productDTO.setDrinkPrice(Double.parseDouble(normalPrice));
                 productDTO.setDrinkImageUrl(imageUrl);

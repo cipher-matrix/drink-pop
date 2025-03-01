@@ -1,8 +1,12 @@
 package com.birimarung.utils;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,17 +48,19 @@ public class WebDriverUtils {
     }
 
     public boolean isElementVisible(WebDriver driver, By locator) {
-        timeoutInSeconds = 10;
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
-        boolean isElementVisible = false;
+        timeoutInSeconds = 5;
+        int pollingInterval = 500;
+
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(timeoutInSeconds))
+                .pollingEvery(Duration.ofMillis(pollingInterval))
+                .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
         try {
-            isElementVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
         } catch (Exception e) {
             logger.info("Element " + locator + " Not found");
+            return false;
         }
-
-
-        return isElementVisible;
     }
 
 

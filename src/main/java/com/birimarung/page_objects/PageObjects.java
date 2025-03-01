@@ -23,4 +23,5 @@ public class PageObjects {
     public By productNameElementPickNPay = By.xpath("//div[@class='product-grid-item list-mobile ng-star-inserted']//a[@class='product-grid-item__info-container__name product-action']");
     public By productPricePickNPay = By.xpath("//div[@class='price price_promo']");
     public By smartShopperPrice = By.xpath("//div[@class='product-grid-item__promotion-container']");
+    public By pickNPaySinglePrice = By.xpath("//div[@class='price']");
 }
