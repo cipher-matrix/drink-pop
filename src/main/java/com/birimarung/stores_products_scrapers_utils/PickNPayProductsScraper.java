@@ -40,20 +40,11 @@ public class PickNPayProductsScraper {
                 String[] twoPrices = productPrice.split(" ");
 
 
-                boolean smartShopperPrice = false;
-                int countSmartShopperPrice = 0;
-                while(!smartShopperPrice){
-                    smartShopperPrice = driver.findElement(pageObjects.smartShopperPrice).isDisplayed();
-                    countSmartShopperPrice++;
-                    if(countSmartShopperPrice ==20){
-                        break;
-                    }
-                }
-
-                if(smartShopperPrice){
-                    specialPrice = webDriverUtils.waitForElementPresenceGetText(driver,pageObjects.smartShopperPrice,30);
-                    normalPrice = twoPrices[0].replace("R","");
-                }else{
+                boolean smartShopperPrice = webDriverUtils.isElementVisible(driver, pageObjects.smartShopperPrice);
+                if (smartShopperPrice) {
+                    specialPrice = webDriverUtils.waitForElementPresenceGetText(driver, pageObjects.smartShopperPrice);
+                    normalPrice = twoPrices[0].replace("R", "");
+                } else {
                     specialPrice = twoPrices[0].replace("R", "");
                     normalPrice = twoPrices[1].replace("R", "");
                 }
