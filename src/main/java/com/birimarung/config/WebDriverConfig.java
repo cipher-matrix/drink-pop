@@ -42,10 +42,9 @@ public class WebDriverConfig {
         options.addArguments("--blink-settings=imagesEnabled=false");
         options.addArguments("--disable-notifications");
         // Initialize WebDriver with options
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-
         return driver;
     }
 
